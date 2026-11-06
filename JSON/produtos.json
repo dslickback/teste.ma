@@ -80,7 +80,7 @@
         "cor_prod": "Azul Royal",
         "genero": "feminino",
         "cod_cat": 1,
-        "img": "imgs/biqui-1.png",
+        "img": "../imgs/biqui-1.png",
         "cores": ["navy", "white"]
       },
       {
@@ -93,7 +93,7 @@
         "cor_prod": "Azul Marinho",
         "genero": "feminino",
         "cod_cat": 1,
-        "img": "imgs/biqui-2.png",
+        "img": "../imgs/biqui-2.png",
         "cores": ["navy", "black"]
       },
       {
@@ -106,7 +106,7 @@
         "cor_prod": "Marrom/Bege",
         "genero": "feminino",
         "cod_cat": 2,
-        "img": "imgs/biqui-3.png",
+        "img": "../imgs/biqui-3.png",
         "cores": ["brown", "beige"]
       },
       {
