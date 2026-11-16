@@ -1,150 +1,267 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maré Alta - Coleção 2026</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="../CSS/colecao.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Carrinho - Maré Alta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="../CSS/carrinho.css">
 </head>
+<body>
 
-<body class="masculino">
-
-<header class="top-header">
+  <header class="header" id="cabecalho-principal">
     <div class="header-container">
-        <div class="brand">
-            <a href="../index.html" class="brand-link">
-                <img src="../imgs/meunome.png" alt="Maré Alta Logo" class="header-logo-img"
-                     onerror="this.style.display='none'">
-                <span class="brand-name">Maré Alta</span>
-            </a>
-            <a href="#colecao" class="nav-link-collection">Coleção</a>
-        </div>
+      <a href="../index.html" class="logo">
+        <img src="../imgs/seunome.png" alt="Logo Maré Alta" id="header-logo">
+      </a>
 
-        <div class="search-bar">
-            <input id="searchInput" type="text" placeholder="Pesquisar produtos...">
-            <i data-lucide="search" class="search-icon"></i>
-        </div>
+      <nav class="nav-menu">
+        <a href="../index.html">Início</a>
+        <a href="colecao.html">Coleção</a>
+        <a href="Sobre.html">Sobre</a>
+        <a href="../index.html#contato">Contato</a>
+      </nav>
 
-        <div class="header-icons">
-            <a href="login.html" class="botao-entrar">Entrar</a>
-            <a href="carrinho.html" class="icon-btn" aria-label="Sacola de compras">
-                <i data-lucide="shopping-bag"></i>
-            </a>
-            <button class="icon-btn" id="menuToggle" aria-label="Abrir menu">
-                <i data-lucide="menu"></i>
-            </button>
-        </div>
+      <div class="header-actions">
+        <a href="../index.html" class="btn-entrar">Entrar</a>
+        <a href="carrinho.html" class="icon-btn" aria-label="Carrinho de compras">
+          <i class="fas fa-shopping-bag"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="cart-wrapper">
+    <div class="cart-header-card">
+      <label class="custom-checkbox">
+        <input type="checkbox" id="select-all" checked>
+        <span class="checkmark"></span>
+      </label>
+      <h2>MEU CARRINHO</h2>
     </div>
 
-    <nav class="nav-menu-dropdown" id="navMenu">
-        <ul>
-            <li><a href="../index.html">Início</a></li>
-            <li><a href="sobre.html">Sobre</a></li>
-            <li><a href="../index.html#contato">Contato</a></li>
-        </ul>
-    </nav>
-</header>
-<section class="hero-banner" id="inicio">
-    <div class="banner-content">
-        <div class="gender-toggle">
-            <button class="gender-btn" data-gender="feminino">
-                <span class="gender-symbol">♀</span> Feminino
-            </button>
-            <button class="gender-btn active" data-gender="masculino">
-                <span class="gender-symbol">♂</span> Masculino
-            </button>
+    <div class="filter-bar">
+      <button type="button" class="btn-filter active">Todos os itens</button>
+    </div>
+
+    <div class="cart-items-list">
+      <!-- Item 1 -->
+      <div class="cart-item-card" data-price="189.90">
+        <label class="custom-checkbox">
+          <input type="checkbox" class="item-checkbox" checked>
+          <span class="checkmark"></span>
+        </label>
+
+        <div class="item-image">
+          <img src="../imgs/biqui-1.png" alt="Biquíni Coral Sunset">
         </div>
 
-        <div class="hero-titles">
-            <span class="subtitle">Coleção 2026</span>
-            <h1 class="main-title">Ala <span id="heroGender">Masculina</span></h1>
-            <p class="description" id="heroDescription">
-                Bermudas, sungas, camisas e kits para curtir o mar com estilo
-            </p>
+        <div class="item-details">
+          <h3 class="item-title">Biquíni Coral Sunset — R\$ 189,90</h3>
+          <div class="item-badges">
+            <div class="custom-dropdown item-size-dropdown">
+              <button type="button" class="dropdown-toggle">
+                <span>Tamanho: M</span>
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="dropdown-menu">
+                <div class="dropdown-option" data-value="P">Tamanho: P</div>
+                <div class="dropdown-option active" data-value="M">Tamanho: M</div>
+                <div class="dropdown-option" data-value="G">Tamanho: G</div>
+                <div class="dropdown-option" data-value="GG">Tamanho: GG</div>
+              </div>
+            </div>
+
+            <div class="custom-dropdown item-qty-dropdown">
+              <button type="button" class="dropdown-toggle">
+                <span>Qtd: 1</span>
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="dropdown-menu">
+                <div class="dropdown-option active" data-value="1">Qtd: 1</div>
+                <div class="dropdown-option" data-value="2">Qtd: 2</div>
+                <div class="dropdown-option" data-value="3">Qtd: 3</div>
+                <div class="dropdown-option" data-value="4">Qtd: 4</div>
+                <div class="dropdown-option" data-value="5">Qtd: 5</div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- Item 2 -->
+      <div class="cart-item-card" data-price="229.90">
+        <label class="custom-checkbox">
+          <input type="checkbox" class="item-checkbox" checked>
+          <span class="checkmark"></span>
+        </label>
+
+        <div class="item-image">
+          <img src="../imgs/biqui-2.png" alt="Saída Boho Chic">
+        </div>
+
+        <div class="item-details">
+          <h3 class="item-title">Saída Boho Chic — R\$ 229,90</h3>
+          <div class="item-badges">
+            <div class="custom-dropdown item-size-dropdown">
+              <button type="button" class="dropdown-toggle">
+                <span>Tamanho: G</span>
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="dropdown-menu">
+                <div class="dropdown-option" data-value="P">Tamanho: P</div>
+                <div class="dropdown-option" data-value="M">Tamanho: M</div>
+                <div class="dropdown-option active" data-value="G">Tamanho: G</div>
+                <div class="dropdown-option" data-value="GG">Tamanho: GG</div>
+              </div>
+            </div>
+
+            <div class="custom-dropdown item-qty-dropdown">
+              <button type="button" class="dropdown-toggle">
+                <span>Qtd: 1</span>
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="dropdown-menu">
+                <div class="dropdown-option active" data-value="1">Qtd: 1</div>
+                <div class="dropdown-option" data-value="2">Qtd: 2</div>
+                <div class="dropdown-option" data-value="3">Qtd: 3</div>
+                <div class="dropdown-option" data-value="4">Qtd: 4</div>
+                <div class="dropdown-option" data-value="5">Qtd: 5</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 3 -->
+      <div class="cart-item-card" data-price="149.90">
+        <label class="custom-checkbox">
+          <input type="checkbox" class="item-checkbox" checked>
+          <span class="checkmark"></span>
+        </label>
+
+        <div class="item-image">
+          <img src="../imgs/sunga-1.png" alt="Sunga Classic Navy">
+        </div>
+
+        <div class="item-details">
+          <h3 class="item-title">Sunga Classic Navy — R\$ 149,90</h3>
+          <div class="item-badges">
+            <div class="custom-dropdown item-size-dropdown">
+              <button type="button" class="dropdown-toggle">
+                <span>Tamanho: M</span>
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="dropdown-menu">
+                <div class="dropdown-option" data-value="P">Tamanho: P</div>
+                <div class="dropdown-option active" data-value="M">Tamanho: M</div>
+                <div class="dropdown-option" data-value="G">Tamanho: G</div>
+                <div class="dropdown-option" data-value="GG">Tamanho: GG</div>
+              </div>
+            </div>
+
+            <div class="custom-dropdown item-qty-dropdown">
+              <button type="button" class="dropdown-toggle">
+                <span>Qtd: 1</span>
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="dropdown-menu">
+                <div class="dropdown-option active" data-value="1">Qtd: 1</div>
+                <div class="dropdown-option" data-value="2">Qtd: 2</div>
+                <div class="dropdown-option" data-value="3">Qtd: 3</div>
+                <div class="dropdown-option" data-value="4">Qtd: 4</div>
+                <div class="dropdown-option" data-value="5">Qtd: 5</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</section>
 
-<main class="collection-container" id="colecao">
-    <img src="../imgs/flor- girassol.png" alt="" class="hero-shape flor-right feminino-only">
-    <img src="../imgs/baleia-1.png" alt="" class="hero-shape cardume-circulo-left masculino-only">
-    <div class="filter-header">
-        <span class="section-tag">Coleção 2026</span>
-        <h2 class="section-title">Peças que <em>brilham</em><br>no verão</h2>
+    <div class="summary-card">
+      <h3 class="summary-title">Resumo do Pedido</h3>
+      <div class="summary-content">
+        <div class="selected-thumbs" id="selected-thumbs"></div>
 
-        <div class="filter-tags" id="filterTags"></div>
+        <div class="price-box">
+          <span class="price-label">Subtotal (itens selecionados)</span>
+          <div class="price-tag" id="total-price">R\$ 0,00</div>
+
+          <div class="payment-methods">
+            <span class="payment-title">Formas de pagamento aceitas</span>
+            <div class="payment-grid">
+              <span class="pay-icon mastercard" title="Mastercard"></span>
+              <span class="pay-icon visa" title="Visa"></span>
+              <span class="pay-icon elo" title="Elo"></span>
+              <span class="pay-icon diners" title="Diners Club"></span>
+              <span class="pay-icon amex" title="American Express"></span>
+              <span class="pay-icon boleto" title="Boleto"></span>
+              <span class="pay-icon paypal" title="PayPal"></span>
+              <span class="pay-icon picpay" title="PicPay"></span>
+              <span class="pay-icon pix" title="PIX"></span>
+              <span class="pay-icon applepay" title="Apple Pay"></span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </main>
 
-    <div class="product-grid" id="productGrid"></div>
-
-    <div class="empty-state" id="emptyState">
-        <div class="empty-icon">🌊</div>
-        <h3>Nenhuma peça encontrada</h3>
-        <p>Tente outra categoria ou pesquise por outro produto.</p>
-    </div>
-
-    <div class="load-more-wrapper">
-        <button class="btn-see-more" id="seeMoreBtn">Ver mais</button>
-    </div>
-</main>
-
-<div class="ocean-wave-wrapper">
-    <div class="ocean-wave-banner"></div>
-</div>
-
-<footer class="rodape-principal">
+  <footer class="rodape-principal">
     <div class="container-rodape">
-        <div class="grid-rodape">
-            <div class="coluna-logo-rodape">
-                <div class="brand-rodape" style="display: flex; align-items: center; gap: 8px;">
-                    <img src="../imgs/seunome.png" alt="Logo Maré Alta" style="height: 55px; width: auto; object-fit: contain;">
-                    <span class="texto-brand-rodape">MARE ALTA</span>
-                </div>
-                <p class="descricao-rodape">
-                    Moda praia premium com alma brasileira, feita para quem vive o verão com estilo.
-                </p>
-            </div>
-            <div class="coluna-links-rodape">
-                <h4>Navegação</h4>
-                <ul>
-                    <li><a href="../index.html#inicio">Início</a></li>
-                    <li><a href="colecao.html">Coleção</a></li>
-                    <li><a href="Sobre.html">Sobre nós</a></li>
-                    <li><a href="../index.html#contato">Contato</a></li>
-                </ul>
-            </div>
-            <div class="coluna-links-rodape">
-                <h4>Categorias</h4>
-                <ul id="footerCategories"></ul>
-            </div>
-            <div class="coluna-links-rodape">
-                <h4>Atendimento</h4>
-                <ul>
-                    <li><a href="../index.html#contato">FAQ</a></li>
-                    <li><a href="../index.html#contato">Trocas e devoluções</a></li>
-                    <li><a href="rastreio.html">Rastrear pedido</a></li>
-                    <li><a href="../index.html#contato">Fale conosco</a></li>
-                </ul>
-            </div>
+      <div class="grid-rodape">
+        <div class="coluna-logo-rodape">
+          <div class="brand-rodape" style="display: flex; align-items: center; gap: 8px;">
+            <img src="../imgs/seunome.png" alt="Logo Maré Alta" style="height: 55px; width: auto; object-fit: contain;">
+            <span class="texto-brand-rodape">MARE ALTA</span>
+          </div>
+          <p class="descricao-rodape">
+            Moda praia premium com alma brasileira, feita para quem vive o verão com estilo.
+          </p>
         </div>
-        <div class="linha-divisor-rodape"></div>
-        <div class="rodape-bottom">
-            <p>© 2026 MareAlta. Todos os direitos reservados.</p>
-            <div class="links-legais-rodape">
-                <a href="privacidade.html">Privacidade</a>
-                <a href="termos.html">Termos de uso</a>
-                <a href="cookies.html">Cookies</a>
-            </div>
+        <div class="coluna-links-rodape">
+          <h4>Navegação</h4>
+          <ul>
+            <li><a href="../index.html#inicio">Início</a></li>
+            <li><a href="colecao.html">Coleção</a></li>
+            <li><a href="Sobre.html">Sobre nós</a></li>
+            <li><a href="../index.html#contato">Contato</a></li>
+          </ul>
         </div>
+        <div class="coluna-links-rodape">
+          <h4>Categorias</h4>
+          <ul>
+            <li><a href="../index.html#categorias">Biquínis</a></li>
+            <li><a href="../index.html#categorias">Maiôs</a></li>
+            <li><a href="../index.html#categorias">Saídas de praia</a></li>
+            <li><a href="../index.html#categorias">Acessórios</a></li>
+          </ul>
+        </div>
+        <div class="coluna-links-rodape">
+          <h4>Atendimento</h4>
+          <ul>
+            <li><a href="../index.html#contato">FAQ</a></li>
+            <li><a href="../index.html#contato">Trocas e devoluções</a></li>
+            <li><a href="rastreio.html">Rastrear pedido</a></li>
+            <li><a href="../index.html#contato">Fale conosco</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="linha-divisor-rodape"></div>
+      <div class="rodape-bottom">
+        <p>© 2026 MareAlta. Todos os direitos reservados.</p>
+        <div class="links-legais-rodape">
+          <a href="privacidade.html">Privacidade</a>
+          <a href="termos.html">Termos de uso</a>
+          <a href="cookies.html">Cookies</a>
+        </div>
+      </div>
     </div>
-</footer>
+  </footer>
 
-<script src="../JS/colecao.js"></script>
+  <script src="../JS/carrinho.js"></script>
 </body>
 </html>
