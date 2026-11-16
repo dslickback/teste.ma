@@ -7,26 +7,79 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/mareAlta.css">
+    <link rel="stylesheet" href="../CSS/mareAlta.css">
     
     <style>
         .pagina-sobre {
             padding-top: 140px;
             padding-bottom: 60px;
         }
+
+        /* RODAPÉ PADRÃO */
+        .rodape-principal {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 70px 80px 30px 80px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .container-rodape { max-width: 1200px; margin: 0 auto; }
+        .grid-rodape { display: flex; justify-content: space-between; gap: 40px; margin-bottom: 60px; }
+        .coluna-logo-rodape { max-width: 280px; }
+
+        .brand-rodape { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+
+        .emblema-ma {
+            width: 60px; height: 60px;
+            border: 1.5px solid #E0BA79;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #E0BA79;
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-style: italic;
+        }
+
+        .texto-brand-rodape { font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: 1.5px; }
+        .descricao-rodape { font-size: 13px; line-height: 1.6; color: rgba(255, 255, 255, 0.8); font-weight: 300; }
+
+        .coluna-links-rodape h4 { font-size: 15px; font-weight: 500; margin-bottom: 25px; color: #ffffff; }
+        .coluna-links-rodape ul { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+        .coluna-links-rodape a { color: rgba(255, 255, 255, 0.8); text-decoration: none; font-size: 14px; font-weight: 300; transition: color 0.3s; }
+        .coluna-links-rodape a:hover { color: #ffffff; }
+
+        .linha-divisor-rodape { width: 100%; height: 1px; background-color: rgba(255, 255, 255, 0.2); margin-bottom: 25px; }
+
+        .rodape-bottom { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: rgba(255, 255, 255, 0.8); font-weight: 300; }
+        .links-legais-rodape { display: flex; gap: 25px; }
+        .links-legais-rodape a { color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s; }
+        .links-legais-rodape a:hover { color: #ffffff; }
+
+        @media (max-width: 1024px) {
+            .rodape-principal { padding: 60px 30px 30px 30px; }
+            .grid-rodape { flex-direction: column; gap: 30px; }
+        }
+
+        @media (max-width: 768px) {
+            .rodape-bottom {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
     <header id="cabecalho-principal">
         <nav class="barra-navegacao">
-            <a href="index.html" class="logotipo">
-                <img src="imgs/meunome.png" alt="Logo Maré Alta" class="imagem-logo">
+            <a href="../index.html" class="logotipo">
+                <img src="../imgs/seunome.png" alt="Logo Maré Alta" class="imagem-logo">
             </a>
             <ul class="links-navegacao">
-                <li><a href="index.html">Início</a></li>
-                <li><a href="html/colecao.html">Coleção</a></li>
-                <li><a href="html/sobre.html" class="ativo">Sobre</a></li>                
-                <li><a href="index.html#contato">Contato</a></li>
+                <li><a href="../index.html">Início</a></li>
+                <li><a href="colecao.html">Coleção</a></li>
+                <li><a href="Sobre.html" class="ativo">Sobre</a></li>                
+                <li><a href="../index.html#contato">Contato</a></li>
             </ul>
             <div class="acoes-navegacao">
                 <a href="#" class="botao-entrar">Entrar</a>
@@ -80,7 +133,7 @@
                 </div>
                 <div class="coluna-imagens-sobre">
                     <div class="cartao-imagem img-superior">
-                        <img src="imgs/vistaMar.jpg" alt="Vista Maré Alta">
+                        <img src="../imgs/vistaMar.jpg" alt="Vista Maré Alta">
                     </div>
                     <div class="cartao-imagem img-inferior">
                         <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400&h=500" alt="Praia e Sol">
@@ -114,7 +167,7 @@
             <div class="grid-rodape">
                 <div class="coluna-logo-rodape">
                     <div class="brand-rodape" style="display: flex; align-items: center; gap: 8px;">
-                        <img src="imgs/seunome.png" alt="Logo Maré Alta" style="height: 48px; width: auto; object-fit: contain;">
+                        <img src="../imgs/seunome.png" alt="Logo Maré Alta" style="height: 55px; width: auto; object-fit: contain;">
                         <span class="texto-brand-rodape">MARE ALTA</span>
                     </div>
                     <p class="descricao-rodape">
@@ -124,28 +177,28 @@
                 <div class="coluna-links-rodape">
                     <h4>Navegação</h4>
                     <ul>
-                        <li><a href="index.html">Início</a></li>
-                        <li><a href="html/colecao.html">Coleção</a></li>
-                        <li><a href="html/sobre.html">Sobre nós</a></li>
-                        <li><a href="index.html#contato">Contato</a></li>
+                        <li><a href="../index.html#inicio">Início</a></li>
+                        <li><a href="colecao.html">Coleção</a></li>
+                        <li><a href="Sobre.html">Sobre nós</a></li>
+                        <li><a href="../index.html#contato">Contato</a></li>
                     </ul>
                 </div>
                 <div class="coluna-links-rodape">
                     <h4>Categorias</h4>
                     <ul>
-                        <li><a href="index.html#categorias">Biquínis</a></li>
-                        <li><a href="index.html#categorias">Maiôs</a></li>
-                        <li><a href="index.html#categorias">Saídas de praia</a></li>
-                        <li><a href="index.html#categorias">Acessórios</a></li>
+                        <li><a href="../index.html#categorias">Biquínis</a></li>
+                        <li><a href="../index.html#categorias">Maiôs</a></li>
+                        <li><a href="../index.html#categorias">Saídas de praia</a></li>
+                        <li><a href="../index.html#categorias">Acessórios</a></li>
                     </ul>
                 </div>
                 <div class="coluna-links-rodape">
                     <h4>Atendimento</h4>
                     <ul>
-                        <li><a href="index.html#contato">FAQ</a></li>
-                        <li><a href="index.html#contato">Trocas e devoluções</a></li>
-                        <li><a href="html/rastreio.html">Rastrear pedido</a></li>
-                        <li><a href="index.html#contato">Fale conosco</a></li>
+                        <li><a href="../index.html#contato">FAQ</a></li>
+                        <li><a href="../index.html#contato">Trocas e devoluções</a></li>
+                        <li><a href="rastreio.html">Rastrear pedido</a></li>
+                        <li><a href="../index.html#contato">Fale conosco</a></li>
                     </ul>
                 </div>
             </div>
@@ -153,9 +206,9 @@
             <div class="rodape-bottom">
                 <p>© 2026 MareAlta. Todos os direitos reservados.</p>
                 <div class="links-legais-rodape">
-                    <a href="html/privacidade.html">Privacidade</a>
-                    <a href="html/termos.html">Termos de uso</a>
-                    <a href="html/cookies.html">Cookies</a>
+                    <a href="privacidade.html">Privacidade</a>
+                    <a href="termos.html">Termos de uso</a>
+                    <a href="cookies.html">Cookies</a>
                 </div>
             </div>
         </div>
@@ -163,7 +216,7 @@
 
     <div id="modal-auth" class="modal-overlay" aria-hidden="true">
         <div class="modal-card">
-            <button type="button" class="modal-fechar" id="fechar-modal" aria-label="Fechar">&times;</button>
+            <button type="button" class="modal-fechar" id="fechar-modal" aria-label="Fechar">×</button>
             <div class="modal-abas" id="container-abas">
                 <button type="button" class="aba-btn ativo" data-tab="login">Entrar</button>
                 <button type="button" class="aba-btn" data-tab="cadastro">Cadastrar</button>
@@ -224,6 +277,6 @@
         </div>
     </div>
 
-    <script src="js/script.js"></script>
+    <script src="../JS/script.js"></script>
 </body>
 </html>
