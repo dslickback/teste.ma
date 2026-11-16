@@ -29,8 +29,12 @@ a {
   left: 0;
   width: 100%;
   background-color: transparent;
+  border-bottom: 1px solid transparent;
   z-index: 1000;
-  transition: background-color 0.4s ease, box-shadow 0.4s ease, backdrop-filter 0.4s ease;
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              padding 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.4s ease;
 }
 
 .container-cabecalho {
@@ -40,6 +44,11 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: padding 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#cabecalho-principal.com-scroll .container-cabecalho {
+  padding: 14px 40px;
 }
 
 .icone-logo {
@@ -48,6 +57,11 @@ a {
   max-width: 140px;
   object-fit: contain;
   display: block;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+#cabecalho-principal.com-scroll .icone-logo {
+  transform: scale(0.9);
 }
 
 .menu-navegacao {
@@ -99,16 +113,18 @@ a {
   transform: translateY(-2px);
 }
 
-/* Cabeçalho com Scroll */
+/* Cabeçalho com Scroll (Fundo Bege Areia - Padrão Carrinho) */
 #cabecalho-principal.com-scroll {
-  background-color: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background-color: rgba(248, 243, 234, 0.96);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid #ece0c9;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
 #cabecalho-principal.com-scroll .menu-navegacao a,
 #cabecalho-principal.com-scroll .botao-carrinho {
-  color: #444444;
+  color: #121829;
 }
 
 #cabecalho-principal.com-scroll .menu-navegacao a:hover {
