@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (logoHeader) logoHeader.src = "../imgs/meunome.png";
       } else {
         cabecalho.classList.remove("com-scroll");
-        if (logoHeader) logoHeader.src = "../imgs/seunome";
+        if (logoHeader) logoHeader.src = "../imgs/seunome.png";
       }
     }
   }
@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
         toggle.querySelector("span").textContent = option.textContent;
         dropdown.classList.remove("open");
 
-        // Atualiza o resumo se for o dropdown de quantidade
+        // Atualiza o resumo se for o dropdown de quantidade ou tamanho
         if (dropdown.classList.contains("item-qty-dropdown") || dropdown.classList.contains("item-size-dropdown")) {
           updateCartSummary();
         }
