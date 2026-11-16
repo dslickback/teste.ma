@@ -45,7 +45,7 @@ a {
 
 /* LOGO DE IMAGEM */
 .icone-logo {
-  height: 44px;
+  height: 70px;
   width: auto;
   max-width: 120px;
   object-fit: contain;
@@ -244,89 +244,43 @@ a {
    RODAPÉ PRINCIPAL
    ========================================================== */
 .rodape-principal {
-  background-color: #050505;
+  background-color: #000000;
   color: #ffffff;
-  padding-top: 60px;
+  padding: 70px 80px 30px 80px;
+  font-family: 'Montserrat', sans-serif;
 }
 
-.container-rodape {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 30px 50px 30px;
-  display: grid;
-  grid-template-columns: 1.8fr 1fr 1fr 1fr;
-  gap: 40px;
-}
+.container-rodape { max-width: 1200px; margin: 0 auto; }
+.grid-rodape { display: flex; justify-content: space-between; gap: 40px; margin-bottom: 60px; }
+.coluna-logo-rodape { max-width: 280px; }
 
-.coluna-rodape.marca .nome-marca {
+.brand-rodape { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+
+.emblema-ma {
+  width: 60px; height: 60px;
+  border: 1.5px solid #E0BA79;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #E0BA79;
   font-family: 'Playfair Display', serif;
-  font-size: 14px;
-  letter-spacing: 2px;
-  margin: 15px 0 10px 0;
-  color: #ffffff;
+  font-size: 20px;
+  font-style: italic;
 }
 
-.coluna-rodape.marca .descricao-marca {
-  font-size: 12px;
-  color: #888888;
-  max-width: 260px;
-  line-height: 1.6;
-}
+.texto-brand-rodape { font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: 1.5px; }
+.descricao-rodape { font-size: 13px; line-height: 1.6; color: rgba(255, 255, 255, 0.8); font-weight: 300; }
 
-.coluna-rodape h4 {
-  font-size: 13px;
-  font-weight: 500;
-  color: #888888;
-  margin-bottom: 20px;
-}
+.coluna-links-rodape h4 { font-size: 15px; font-weight: 500; margin-bottom: 25px; color: #ffffff; }
+.coluna-links-rodape ul { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+.coluna-links-rodape a { color: rgba(255, 255, 255, 0.8); text-decoration: none; font-size: 14px; font-weight: 300; transition: color 0.3s; }
+.coluna-links-rodape a:hover { color: #ffffff; }
 
-.coluna-rodape ul {
-  list-style: none;
-}
+.linha-divisor-rodape { width: 100%; height: 1px; background-color: rgba(255, 255, 255, 0.2); margin-bottom: 25px; }
 
-.coluna-rodape ul li {
-  margin-bottom: 10px;
-}
-
-.coluna-rodape ul li a {
-  font-size: 12px;
-  color: #cccccc;
-  transition: color 0.2s ease;
-}
-
-.coluna-rodape ul li a:hover {
-  color: #ffffff;
-}
-
-.barra-inferior-rodape {
-  border-top: 1px solid #1a1a1a;
-  padding: 20px 30px;
-  font-size: 11px;
-  color: #777777;
-}
-
-.container-barra-inferior {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.links-legais {
-  display: flex;
-  gap: 20px;
-}
-
-.links-legais a {
-  color: #777777;
-  transition: color 0.2s ease;
-}
-
-.links-legais a.ativo,
-.links-legais a:hover {
-  color: #ffffff;
-}
+.rodape-bottom { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: rgba(255, 255, 255, 0.8); font-weight: 300; }
+.links-legais-rodape { display: flex; gap: 25px; }
+.links-legais-rodape a { color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s; }
+.links-legais-rodape a:hover { color: #ffffff; }
 
 /* ==========================================================
    MODAL DE AUTENTICAÇÃO
@@ -474,13 +428,16 @@ a {
 
 /* Responsividade */
 @media (max-width: 768px) {
-  .container-rodape {
-    grid-template-columns: 1fr;
+  .rodape-principal {
+    padding: 60px 30px 30px 30px;
+  }
+  .grid-rodape {
+    flex-direction: column;
     gap: 30px;
   }
-  .container-barra-inferior {
+  .rodape-bottom {
     flex-direction: column;
-    gap: 12px;
+    gap: 15px;
     text-align: center;
   }
   .menu-navegacao {
