@@ -1,32 +1,39 @@
 /* ==========================================================
-   LÓGICA DE NAVEGAÇÃO E SCROLL DO CABEÇALHO
-   ========================================================== */
-window.addEventListener('scroll', function() {
-  const cabecalho = document.getElementById('cabecalho-principal');
-  if (cabecalho) {
-    if (window.scrollY > 40) {
-      cabecalho.classList.add('com-scroll');
-    } else {
-      cabecalho.classList.remove('com-scroll');
-    }
-  }
-
-  // Suporte caso a segunda seção da Home esteja presente
-  const secaoCategorias = document.querySelector('.secao-categorias');
-  if (secaoCategorias) {
-    const posicao = secaoCategorias.getBoundingClientRect();
-    if (posicao.top < window.innerHeight * 0.75 && posicao.bottom > window.innerHeight * 0.2) {
-      secaoCategorias.classList.add('iluminado-scroll');
-    } else {
-      secaoCategorias.classList.remove('iluminado-scroll');
-    }
-  }
-});
-
-/* ==========================================================
    LÓGICA DO MODAL DE LOGIN / CADASTRO / RECUPERAR SENHA
    ========================================================== */
 document.addEventListener('DOMContentLoaded', function() {
+  // --- TRANSIÇÃO DO CABEÇALHO AO ROLAR (PADRÃO CARRINHO) ---
+  const cabecalho = document.getElementById('cabecalho-principal');
+  const logoHeader = document.getElementById('header-logo');
+
+  function checarScrollHeader() {
+    if (cabecalho) {
+      if (window.scrollY > 60) {
+        cabecalho.classList.add('com-scroll');
+        if (logoHeader) logoHeader.src = '../imgs/meunome.png';
+      } else {
+        cabecalho.classList.remove('com-scroll');
+        if (logoHeader) logoHeader.src = '../imgs/seunome.png';
+      }
+    }
+  }
+
+  window.addEventListener('scroll', checarScrollHeader);
+  checarScrollHeader();
+
+  // Suporte caso a segunda seção da Home esteja presente
+  window.addEventListener('scroll', function() {
+    const secaoCategorias = document.querySelector('.secao-categorias');
+    if (secaoCategorias) {
+      const posicao = secaoCategorias.getBoundingClientRect();
+      if (posicao.top < window.innerHeight * 0.75 && posicao.bottom > window.innerHeight * 0.2) {
+        secaoCategorias.classList.add('iluminado-scroll');
+      } else {
+        secaoCategorias.classList.remove('iluminado-scroll');
+      }
+    }
+  });
+
   const modalAuth = document.getElementById('modal-auth');
   const btnFecharModal = document.getElementById('fechar-modal');
   const abasNav = document.getElementById('container-abas');
