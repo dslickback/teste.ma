@@ -17,20 +17,6 @@ window.addEventListener('scroll', function() {
   }
 });
 
-// Função direta para alternar a visibilidade da palavra-passe
-function toggleMostrarSenha(btn) {
-  const containerInput = btn.closest('.input-com-icone');
-  if (!containerInput) return;
-
-  const inputSenha = containerInput.querySelector('input');
-  if (!inputSenha) return;
-
-  const eSenha = inputSenha.type === 'password';
-  inputSenha.type = eSenha ? 'text' : 'password';
-
-  btn.classList.toggle('senha-visivel', eSenha);
-}
-
 document.addEventListener('DOMContentLoaded', function() {
   const modalAuth = document.getElementById('modal-auth');
   const btnFecharModal = document.getElementById('fechar-modal');
@@ -142,26 +128,26 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Alternar visualização da senha (Olho) com Delegação de Eventos
-document.addEventListener('click', function(e) {
-  const botaoToggle = e.target.closest('.btn-toggle-senha');
-  if (!botaoToggle) return;
+  document.addEventListener('click', function(e) {
+    const botaoToggle = e.target.closest('.btn-toggle-senha');
+    if (!botaoToggle) return;
 
-  e.preventDefault();
+    e.preventDefault();
 
-  // Encontra a caixa .input-com-icone onde o botão está inserido
-  const containerInput = botaoToggle.closest('.input-com-icone');
-  if (!containerInput) return;
+    // Encontra a caixa .input-com-icone onde o botão está inserido
+    const containerInput = botaoToggle.closest('.input-com-icone');
+    if (!containerInput) return;
 
-  const inputSenha = containerInput.querySelector('input');
-  if (!inputSenha) return;
+    const inputSenha = containerInput.querySelector('input');
+    if (!inputSenha) return;
 
-  // Alterna o tipo do campo entre 'password' e 'text'
-  const eSenha = inputSenha.type === 'password';
-  inputSenha.type = eSenha ? 'text' : 'password';
+    // Alterna o tipo do campo entre 'password' e 'text'
+    const eSenha = inputSenha.type === 'password';
+    inputSenha.type = eSenha ? 'text' : 'password';
 
-  // Adiciona/remove a classe que alterna o ícone do olho no CSS
-  botaoToggle.classList.toggle('senha-visivel', eSenha);
-});
+    // Adiciona/remove a classe que alterna o ícone do olho no CSS
+    botaoToggle.classList.toggle('senha-visivel', eSenha);
+  });
 
   function dispararErroBotao(botao, camposComErro = []) {
     botao.classList.remove('tremer');
