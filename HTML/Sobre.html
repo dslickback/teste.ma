@@ -10,6 +10,27 @@
     <link rel="stylesheet" href="../CSS/mareAlta.css">
     
     <style>
+        /* TRANSIÇÃO DO CABEÇALHO AO ROLAR (PADRÃO CARRINHO) */
+        #cabecalho-principal {
+            border-bottom: 1px solid transparent;
+            transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        padding 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        border-color 0.4s ease;
+        }
+
+        #cabecalho-principal.com-scroll {
+            background-color: rgba(248, 243, 234, 0.96);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-bottom: 1px solid #ece0c9;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        #cabecalho-principal .imagem-logo {
+            transition: transform 0.3s ease, height 0.4s ease, opacity 0.3s ease;
+        }
+
         .pagina-sobre {
             padding-top: 140px;
             padding-bottom: 60px;
@@ -73,7 +94,7 @@
     <header id="cabecalho-principal">
         <nav class="barra-navegacao">
             <a href="../index.html" class="logotipo">
-                <img src="../imgs/seunome.png" alt="Logo Maré Alta" class="imagem-logo">
+                <img src="../imgs/seunome.png" alt="Logo Maré Alta" class="imagem-logo" id="header-logo">
             </a>
             <ul class="links-navegacao">
                 <li><a href="../index.html">Início</a></li>
@@ -278,5 +299,26 @@
     </div>
 
     <script src="../JS/script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const cabecalho = document.getElementById("cabecalho-principal");
+            const logoHeader = document.getElementById("header-logo");
+
+            function checarScrollHeader() {
+                if (cabecalho) {
+                    if (window.scrollY > 60) {
+                        cabecalho.classList.add("com-scroll");
+                        if (logoHeader) logoHeader.src = "../imgs/meunome.png";
+                    } else {
+                        cabecalho.classList.remove("com-scroll");
+                        if (logoHeader) logoHeader.src = "../imgs/seunome.png";
+                    }
+                }
+            }
+
+            window.addEventListener("scroll", checarScrollHeader);
+            checarScrollHeader();
+        });
+    </script>
 </body>
 </html>
