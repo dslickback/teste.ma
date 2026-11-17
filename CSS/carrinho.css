@@ -1,15 +1,15 @@
-/* --- PALETA DE CORES (VARIÁVEIS) --- */
+
 :root {
-  --bg-page: #0d1322;            /* Fundo escuro premium (Azul Oceano Profundo) */
-  --header-scroll-bg: #f8f3ea;   /* Fundo Bege Areia ao rolar */
-  --card-bg: #cbe3f7;            /* Azul Brisa Marinha suave para os cards */
-  --card-text: #0f172a;          /* Texto escuro nos cards */
-  --accent-color: #e5983a;       /* Dourado Pôr do Sol / Terracota */
-  --accent-hover: #cd8229;       /* Hover do botão/dropdown */
-  --dropdown-bg: #0d1322;        /* Fundo escuro da lista suspensa */
-  --footer-bg: #080d1a;          /* Fundo do rodapé */
-  --text-light: #f8fafc;         /* Textos claros gerais */
-  --text-muted: #94a3b8;         /* Textos secundários */
+  --bg-page: #0d1322;            
+  --header-scroll-bg: #f8f3ea;   
+  --card-bg: #cbe3f7;            
+  --card-text: #0f172a;          
+  --accent-color: #e5983a;       
+  --accent-hover: #cd8229;       
+  --dropdown-bg: #0d1322;        
+  --footer-bg: #080d1a;          
+  --text-light: #f8fafc;         
+  --text-muted: #94a3b8;        
 }
 
 * {
@@ -27,7 +27,6 @@ body {
   flex-direction: column;
 }
 
-/* Header Fixo e Transição Fluida */
 .header {
   position: fixed;
   top: 0;
@@ -43,7 +42,6 @@ body {
               border-color 0.4s ease;
 }
 
-/* Estado com Scroll (Fundo Bege Areia) */
 .header.com-scroll {
   background-color: rgba(248, 243, 234, 0.96);
   backdrop-filter: blur(8px);
@@ -142,7 +140,6 @@ body {
   color: var(--header-scroll-bg);
 }
 
-/* Container do Carrinho */
 .cart-wrapper {
   flex: 1;
   padding: 110px 20px 40px 20px;
@@ -182,7 +179,6 @@ body {
   font-weight: bold;
 }
 
-/* Lista de Produtos */
 .cart-items-list {
   display: flex;
   flex-direction: column;
@@ -233,7 +229,6 @@ body {
   flex-wrap: wrap;
 }
 
-/* Custom Dropdown (Tamanho e Quantidade) */
 .custom-dropdown {
   position: relative;
   display: inline-block;
@@ -270,7 +265,6 @@ body {
   transform: rotate(180deg);
 }
 
-/* Menu Suspenso Animado */
 .dropdown-menu {
   position: absolute;
   top: calc(100% + 8px);
@@ -318,7 +312,6 @@ body {
   color: #0d1322;
 }
 
-/* Custom Checkbox */
 .custom-checkbox {
   position: relative;
   display: inline-block;
@@ -370,7 +363,6 @@ body {
   transform: rotate(45deg);
 }
 
-/* Card de Resumo */
 .summary-card {
   background-color: var(--card-bg);
   color: var(--card-text);
@@ -415,7 +407,6 @@ body {
   display: block;
 }
 
-/* --- BADGES NAS MINIATURAS DO RESUMO --- */
 .thumb-badge {
   position: absolute;
   font-size: 0.7rem;
@@ -427,7 +418,6 @@ body {
   z-index: 5;
 }
 
-/* Badge de Tamanho (Canto superior esquerdo - Sempre visível) */
 .thumb-badge-size {
   top: -6px;
   left: -6px;
@@ -440,7 +430,6 @@ body {
   height: 20px;
 }
 
-/* Badge de Quantidade (Canto superior direito - Apenas se > 1) */
 .thumb-badge-qty {
   top: -6px;
   right: -6px;
@@ -481,7 +470,6 @@ body {
   margin-bottom: 8px;
 }
 
-/* Grid das Bandeiras (5 colunas) */
 .payment-grid {
   display: grid;
   grid-template-columns: repeat(5, 50px);
@@ -502,7 +490,6 @@ body {
   box-sizing: border-box;
 }
 
-/* URLs das Imagens dos Cartões */
 .pay-icon.mastercard { background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvSsvA5HtVkw1ak0hM0YN3nfZZZVCtkY3t71bNDQFqOw&s=10'); }
 .pay-icon.visa       { background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXC3UztoOicMe_CKD4kB4XwA8cM7twY0yZig7cgP1VEw&s=10'); }
 .pay-icon.elo        { background-image: url('https://marcaspelomundo.com.br/wp-content/uploads/2022/09/ELO_4Cores_Pos.quadrado.png'); }
@@ -684,7 +671,6 @@ body {
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06); /* Suave profundidade para dentro da caixa */
 }
 
-/* Sombra projetada na imagem para dar a sensação de flutuar */
 .item-image img {
   border-radius: 8px;
   box-shadow: 0 12px 22px -4px rgba(18, 24, 41, 0.25),
@@ -692,7 +678,6 @@ body {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Moldura clara nas miniaturas (lá embaixo no resumo) */
 .thumb-wrapper {
   background-color: #cbe3f7;
   padding: 4px;
@@ -700,9 +685,61 @@ body {
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
-/* Sombra da miniatura flutuando */
 .thumb-wrapper img {
   border-radius: 6px;
   border: none;
   box-shadow: 0 6px 14px rgba(18, 24, 41, 0.22);
+}
+
+.item-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.btn-delete-item {
+  background: transparent;
+  border: none;
+  color: #475569;
+  cursor: pointer;
+  font-size: 0.95rem;
+  padding: 2px 6px;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-delete-item:hover {
+  color: #dc2626;
+  transform: scale(1.1);
+}
+
+.cart-empty-state {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px dashed rgba(203, 227, 247, 0.3);
+  border-radius: 12px;
+  padding: 45px 20px;
+  text-align: center;
+  color: var(--text-light);
+}
+
+.cart-empty-state p {
+  margin-bottom: 18px;
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+.btn-explorar {
+  display: inline-block;
+  background-color: var(--accent-color);
+  color: #ffffff;
+  text-decoration: none;
+  padding: 10px 26px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+}
+
+.btn-explorar:hover {
+  background-color: var(--accent-hover);
 }
