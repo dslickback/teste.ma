@@ -1,5 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // --- TRANSIÇÃO DO CABEÇALHO AO ROLAR ---
+document.addEventListener("DOMContentLoaded", async () => {
   const cabecalho = document.getElementById("cabecalho-principal");
   const logoHeader = document.getElementById("header-logo");
 
@@ -18,45 +17,196 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", checarScrollHeader);
   checarScrollHeader();
 
-  // --- LÓGICA DO CARRINHO DE COMPRAS ---
-  const itemCheckboxes = document.querySelectorAll(".item-checkbox");
+  let dadosBanco = JSON.parse(localStorage.getItem("mare_alta_db"));
+  if (!dadosBanco) {
+    try {
+      const response = await fetch("../produtos.json");
+      const data = await response.json();
+      dadosBanco = data.Mare_Alta;
+      localStorage.setItem("mare_alta_db", JSON.stringify(dadosBanco));
+    } catch (error) {
+      console.warn("Não foi possível carregar ../produtos.json:", error);
+    }
+  }
+
+  const cartListContainer = document.getElementById("cart-items-list");
   const selectAllCheckbox = document.getElementById("select-all");
   const totalPriceElement = document.getElementById("total-price");
   const selectedThumbsContainer = document.getElementById("selected-thumbs");
 
+  let carrinho = JSON.parse(localStorage.getItem("mare_alta_carrinho")) || [];
+
   const placeholderImage =
     'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100%" height="100%" fill="%23e8e8e8"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23888888" font-size="11" font-family="sans-serif">Sem Imagem</text></svg>';
 
-  document.querySelectorAll("img").forEach((img) => {
-    img.addEventListener("error", function () {
-      this.onerror = null;
-      this.src = placeholderImage;
+  function salvarCarrinho() {
+    localStorage.setItem("mare_alta_carrinho", JSON.stringify(carrinho));
+  }
+
+  function ajustarCaminhoImg(caminho) {
+    if (!caminho) return placeholderImage;
+    if (caminho.startsWith("http") || caminho.startsWith("data:") || caminho.startsWith("../")) {
+      return caminho;
+    }
+    return `../${caminho}`;
+  }
+
+  function renderizarCarrinho() {
+    if (!cartListContainer) return;
+
+    if (carrinho.length === 0) {
+      cartListContainer.innerHTML = `
+        <div class="cart-empty-state">
+          <p>Seu carrinho está vazio no momento.</p>
+          <a href="colecao.html" class="btn-explorar">Explorar Coleção</a>
+        </div>
+      `;
+      updateCartSummary();
+      return;
+    }
+
+    cartListContainer.innerHTML = carrinho.map((item, index) => {
+      const precoFormatado = Number(item.preco).toFixed(2).replace(".", ",");
+      const tamanhoAtual = item.tamanho || "M";
+      const qtdAtual = Number(item.quantidade) || 1;
+
+      const opcoesTamanho = ["P", "M", "G", "GG"].map(tam => `
+        <div class="dropdown-option ${tam === tamanhoAtual ? "active" : ""}" data-value="${tam}">
+          Tamanho: ${tam}
+        </div>
+      `).join("");
+
+      const opcoesQtd = [1, 2, 3, 4, 5].map(num => `
+        <div class="dropdown-option ${num === qtdAtual ? "active" : ""}" data-value="${num}">
+          Qtd: ${num}
+        </div>
+      `).join("");
+
+      return `
+        <div class="cart-item-card" data-index="${index}">
+          <label class="custom-checkbox">
+            <input type="checkbox" class="item-checkbox" data-index="${index}" ${item.selecionado !== false ? "checked" : ""}>
+            <span class="checkmark"></span>
+          </label>
+
+          <div class="item-image">
+            <img src="${ajustarCaminhoImg(item.img)}" alt="${item.nome}"
+                 onerror="this.onerror=null; this.src='${placeholderImage}'">
+          </div>
+
+          <div class="item-details">
+            <div class="item-title-row">
+              <h3 class="item-title">${item.nome} — R$ ${precoFormatado}</h3>
+              <button type="button" class="btn-delete-item" data-index="${index}" title="Remover do carrinho">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
+
+            <div class="item-badges">
+              <div class="custom-dropdown item-size-dropdown" data-index="${index}">
+                <button type="button" class="dropdown-toggle">
+                  <span>Tamanho: ${tamanhoAtual}</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="dropdown-menu">
+                  ${opcoesTamanho}
+                </div>
+              </div>
+
+              <div class="custom-dropdown item-qty-dropdown" data-index="${index}">
+                <button type="button" class="dropdown-toggle">
+                  <span>Qtd: ${qtdAtual}</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="dropdown-menu">
+                  ${opcoesQtd}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    vincularEventosCards();
+    updateCartSummary();
+  }
+
+  function vincularEventosCards() {
+
+    document.querySelectorAll(".item-checkbox").forEach((cb) => {
+      cb.addEventListener("change", (e) => {
+        const idx = Number(e.target.dataset.index);
+        carrinho[idx].selecionado = e.target.checked;
+        salvarCarrinho();
+        updateCartSummary();
+      });
     });
-  });
+
+    document.querySelectorAll(".btn-delete-item").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const idx = Number(e.currentTarget.dataset.index);
+        carrinho.splice(idx, 1);
+        salvarCarrinho();
+        renderizarCarrinho();
+      });
+    });
+
+    document.querySelectorAll(".custom-dropdown").forEach((dropdown) => {
+      const toggle = dropdown.querySelector(".dropdown-toggle");
+      const options = dropdown.querySelectorAll(".dropdown-option");
+      const idx = Number(dropdown.dataset.index);
+
+      toggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        document.querySelectorAll(".custom-dropdown").forEach((d) => {
+          if (d !== dropdown) d.classList.remove("open");
+        });
+        dropdown.classList.toggle("open");
+      });
+
+      options.forEach((option) => {
+        option.addEventListener("click", (e) => {
+          e.stopPropagation();
+          options.forEach((opt) => opt.classList.remove("active"));
+          option.classList.add("active");
+
+          toggle.querySelector("span").textContent = option.textContent.trim();
+          dropdown.classList.remove("open");
+
+          const valor = option.getAttribute("data-value");
+          if (dropdown.classList.contains("item-qty-dropdown")) {
+            carrinho[idx].quantidade = parseInt(valor, 10);
+          } else if (dropdown.classList.contains("item-size-dropdown")) {
+            carrinho[idx].tamanho = valor;
+          }
+
+          salvarCarrinho();
+          updateCartSummary();
+        });
+      });
+    });
+  }
 
   function updateCartSummary() {
     let total = 0;
     if (selectedThumbsContainer) selectedThumbsContainer.innerHTML = "";
 
-    itemCheckboxes.forEach((checkbox) => {
-      if (checkbox.checked) {
-        const card = checkbox.closest(".cart-item-card");
-        const price = parseFloat(card.getAttribute("data-price"));
-
-        const activeQtyOption = card.querySelector(".item-qty-dropdown .dropdown-option.active");
-        const quantity = activeQtyOption ? parseInt(activeQtyOption.getAttribute("data-value"), 10) : 1;
-
-        const imgElement = card.querySelector(".item-image img");
+    carrinho.forEach((item) => {
+      if (item.selecionado !== false) {
+        const price = Number(item.preco) || 0;
+        const quantity = Number(item.quantidade) || 1;
+        const size = item.tamanho || "M";
 
         total += price * quantity;
 
-        if (selectedThumbsContainer && imgElement) {
+        if (selectedThumbsContainer) {
           const wrapper = document.createElement("div");
           wrapper.className = "thumb-wrapper";
 
           const thumb = document.createElement("img");
-          thumb.src = imgElement.src;
-          thumb.alt = imgElement.alt;
+          thumb.src = ajustarCaminhoImg(item.img);
+          thumb.alt = item.nome;
           thumb.addEventListener("error", function () {
             this.onerror = null;
             this.src = placeholderImage;
@@ -64,16 +214,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
           wrapper.appendChild(thumb);
 
-          // 1. Badge de Tamanho (Sempre fixa no canto esquerdo)
-          const activeSizeOption = card.querySelector(".item-size-dropdown .dropdown-option.active");
-          const size = activeSizeOption ? activeSizeOption.getAttribute("data-value") : "G";
-
           const sizeBadge = document.createElement("span");
           sizeBadge.className = "thumb-badge thumb-badge-size";
           sizeBadge.textContent = size;
           wrapper.appendChild(sizeBadge);
 
-          // 2. Badge de Quantidade (Apenas no canto direito se > 1)
           if (quantity > 1) {
             const qtyBadge = document.createElement("span");
             qtyBadge.className = "thumb-badge thumb-badge-qty";
@@ -91,63 +236,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (selectAllCheckbox) {
-      const allChecked = Array.from(itemCheckboxes).every((cb) => cb.checked);
-      selectAllCheckbox.checked = allChecked;
+      selectAllCheckbox.checked = carrinho.length > 0 && carrinho.every((item) => item.selecionado !== false);
     }
   }
 
-  // Evento no "Selecionar Todos"
+
   if (selectAllCheckbox) {
     selectAllCheckbox.addEventListener("change", (e) => {
-      itemCheckboxes.forEach((cb) => {
-        cb.checked = e.target.checked;
+      carrinho.forEach((item) => {
+        item.selecionado = e.target.checked;
       });
-      updateCartSummary();
+      salvarCarrinho();
+      renderizarCarrinho();
     });
   }
 
-  // Evento em cada checkbox de item
-  itemCheckboxes.forEach((cb) => {
-    cb.addEventListener("change", updateCartSummary);
-  });
-
-  // --- LÓGICA DOS DROPDOWNS CUSTOMIZADOS ---
-  document.querySelectorAll(".custom-dropdown").forEach((dropdown) => {
-    const toggle = dropdown.querySelector(".dropdown-toggle");
-    const options = dropdown.querySelectorAll(".dropdown-option");
-
-    toggle.addEventListener("click", (e) => {
-      e.stopPropagation();
-      document.querySelectorAll(".custom-dropdown").forEach((d) => {
-        if (d !== dropdown) d.classList.remove("open");
-      });
-      dropdown.classList.toggle("open");
-    });
-
-    options.forEach((option) => {
-      option.addEventListener("click", (e) => {
-        e.stopPropagation();
-        options.forEach((opt) => opt.classList.remove("active"));
-        option.classList.add("active");
-
-        toggle.querySelector("span").textContent = option.textContent;
-        dropdown.classList.remove("open");
-
-        // Atualiza o resumo se for o dropdown de quantidade ou tamanho
-        if (dropdown.classList.contains("item-qty-dropdown") || dropdown.classList.contains("item-size-dropdown")) {
-          updateCartSummary();
-        }
-      });
-    });
-  });
-
-  // Fechar dropdowns ao clicar em qualquer lugar fora
+ 
   document.addEventListener("click", () => {
     document.querySelectorAll(".custom-dropdown").forEach((d) => {
       d.classList.remove("open");
     });
   });
 
-  // Execução inicial
-  updateCartSummary();
+  renderizarCarrinho();
 });
