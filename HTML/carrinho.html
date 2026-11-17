@@ -55,6 +55,14 @@
         <div class="selected-thumbs" id="selected-thumbs"></div>
 
         <div class="price-box">
+          <div class="frete-box">
+  <label for="cep-carrinho">Entrega (CEP do Perfil ou outro):</label>
+  <div class="frete-input-group">
+    <input type="text" id="cep-carrinho" placeholder="00000-000" maxlength="9">
+    <button type="button" id="btn-calcular-frete">Calcular</button>
+  </div>
+  <p class="frete-resultado" id="frete-resultado">Informe um CEP para calcular o frete</p>
+</div>
           <span class="price-label">Subtotal (itens selecionados)</span>
           <div class="price-tag" id="total-price">R\$ 0,00</div>
 
@@ -130,6 +138,7 @@
     </div>
   </footer>
 
-  <script src="../JS/carrinho.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="../JS/carrinho.js"></script>
 </body>
 </html>
