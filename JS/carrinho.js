@@ -94,9 +94,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             <span class="checkmark"></span>
           </label>
 
-          <div class="item-image">
-            <img src="${ajustarCaminhoImg(item.img)}" alt="${item.nome}"
-                 onerror="this.onerror=null; this.src='${placeholderImage}'">
+         <div class="item-image">
+            <img src="${ajustarCaminhoImg(item.img)}" alt="${item.nome}" class="cart-product-img">
           </div>
 
           <div class="item-details">
