@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  // --- 1. TRANSIÇÃO DO CABEÇALHO AO ROLAR ---
   const cabecalho = document.getElementById("cabecalho-principal");
   const logoHeader = document.getElementById("header-logo");
 
@@ -17,6 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   window.addEventListener("scroll", checarScrollHeader);
   checarScrollHeader();
 
+  // --- 2. GARANTIR CARREGAMENTO DO PRODUTOS.JSON NO LOCALSTORAGE ---
   let dadosBanco = JSON.parse(localStorage.getItem("mare_alta_db"));
   if (!dadosBanco) {
     try {
@@ -29,12 +31,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  // --- 3. ESTADO DO CARRINHO E VARIÁVEL DO FRETE ---
   const cartListContainer = document.getElementById("cart-items-list");
   const selectAllCheckbox = document.getElementById("select-all");
   const totalPriceElement = document.getElementById("total-price");
   const selectedThumbsContainer = document.getElementById("selected-thumbs");
 
   let carrinho = JSON.parse(localStorage.getItem("mare_alta_carrinho")) || [];
+  let valorFreteAtual = 0; // Guarda o valor do frete calculado
 
   const placeholderImage =
     'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100%" height="100%" fill="%23e8e8e8"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23888888" font-size="11" font-family="sans-serif">Sem Imagem</text></svg>';
@@ -51,6 +55,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return `../${caminho}`;
   }
 
+  // --- 4. RENDERIZAR OS ITENS DO CARRINHO ---
   function renderizarCarrinho() {
     if (!cartListContainer) return;
 
@@ -132,13 +137,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     updateCartSummary();
   }
 
+  // --- 5. VINCULAR EVENTOS NOS CARDS GERADOS ---
   function vincularEventosCards() {
-
     document.querySelectorAll(".item-checkbox").forEach((cb) => {
       cb.addEventListener("change", (e) => {
         const idx = Number(e.target.dataset.index);
         carrinho[idx].selecionado = e.target.checked;
         salvarCarrinho();
+        recalcularFreteSePreenchido();
         updateCartSummary();
       });
     });
@@ -148,6 +154,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const idx = Number(e.currentTarget.dataset.index);
         carrinho.splice(idx, 1);
         salvarCarrinho();
+        recalcularFreteSePreenchido();
         renderizarCarrinho();
       });
     });
@@ -182,14 +189,16 @@ document.addEventListener("DOMContentLoaded", async () => {
           }
 
           salvarCarrinho();
+          recalcularFreteSePreenchido();
           updateCartSummary();
         });
       });
     });
   }
 
+  // --- 6. ATUALIZAR RESUMO, MINIATURAS E SOMAR O FRETE ---
   function updateCartSummary() {
-    let total = 0;
+    let subtotal = 0;
     if (selectedThumbsContainer) selectedThumbsContainer.innerHTML = "";
 
     carrinho.forEach((item) => {
@@ -198,7 +207,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const quantity = Number(item.quantidade) || 1;
         const size = item.tamanho || "M";
 
-        total += price * quantity;
+        subtotal += price * quantity;
 
         if (selectedThumbsContainer) {
           const wrapper = document.createElement("div");
@@ -231,8 +240,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
 
+    // Soma o subtotal das peças + valorFreteAtual (se houver itens selecionados)
+    const totalFinal = subtotal > 0 ? subtotal + valorFreteAtual : 0;
+
     if (totalPriceElement) {
-      totalPriceElement.textContent = `R$ ${total.toFixed(2).replace(".", ",")}`;
+      totalPriceElement.textContent = `R$ ${totalFinal.toFixed(2).replace(".", ",")}`;
     }
 
     if (selectAllCheckbox) {
@@ -240,6 +252,99 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  // --- 7. CÁLCULO DE FRETE COM JQUERY + DADOS DO PERFIL ---
+  function obterSubtotalSelecionado() {
+    return carrinho.reduce((acc, item) => {
+      return item.selecionado !== false
+        ? acc + (Number(item.preco) || 0) * (Number(item.quantidade) || 1)
+        : acc;
+    }, 0);
+  }
+
+  function calcularFretePorCep(cepDigitado) {
+    if (typeof $ === "undefined") return;
+
+    const cepLimpo = (cepDigitado || "").replace(/\D/g, "");
+    const $resultado = $("#frete-resultado");
+    const subtotalItens = obterSubtotalSelecionado();
+
+    if (cepLimpo.length !== 8) {
+      valorFreteAtual = 0;
+      $resultado.text("Digite um CEP válido com 8 números.").css("color", "#b91c1c");
+      updateCartSummary();
+      return;
+    }
+
+    $resultado.text("Calculando frete...").css("color", "#475569");
+
+    $.getJSON(`https://viacep.com.br/ws/${cepLimpo}/json/`, function (dados) {
+      if (dados.erro) {
+        valorFreteAtual = 0;
+        $resultado.text("CEP não encontrado.").css("color", "#b91c1c");
+        updateCartSummary();
+        return;
+      }
+
+      const uf = dados.uf;
+      let prazo = "5 a 10 dias úteis";
+
+      if (subtotalItens >= 299) {
+        valorFreteAtual = 0;
+        prazo = uf === "MG" ? "2 a 4 dias úteis" : "4 a 8 dias úteis";
+        $resultado
+          .html(`<strong>Frete Grátis</strong> para ${dados.localidade}/${uf} (${prazo})`)
+          .css("color", "#15803d");
+      } else {
+        if (uf === "MG") {
+          valorFreteAtual = 15.90;
+          prazo = "2 a 4 dias úteis";
+        } else if (["SP", "RJ", "ES"].includes(uf)) {
+          valorFreteAtual = 22.90;
+          prazo = "3 a 6 dias úteis";
+        } else {
+          valorFreteAtual = 34.90;
+          prazo = "5 a 10 dias úteis";
+        }
+
+        const freteFormatado = valorFreteAtual.toFixed(2).replace(".", ",");
+        $resultado
+          .html(`Entrega para ${dados.localidade}/${uf}: <strong>R$ ${freteFormatado}</strong> (${prazo})`)
+          .css("color", "#0f172a");
+      }
+
+      updateCartSummary();
+    }).fail(function () {
+      $resultado.text("Erro ao consultar CEP. Tente novamente.").css("color", "#b91c1c");
+    });
+  }
+
+  function recalcularFreteSePreenchido() {
+    if (typeof $ !== "undefined") {
+      const cepAtual = $("#cep-carrinho").val();
+      if (cepAtual && cepAtual.replace(/\D/g, "").length === 8) {
+        calcularFretePorCep(cepAtual);
+      }
+    }
+  }
+
+  // Inicialização dos eventos jQuery do Frete
+  if (typeof $ !== "undefined") {
+    $("#cep-carrinho").on("input", function () {
+      let v = $(this).val().replace(/\D/g, "");
+      if (v.length > 5) v = v.replace(/^(\d{5})(\d)/, "$1-$2");
+      $(this).val(v);
+    });
+
+    $("#btn-calcular-frete").on("click", function () {
+      calcularFretePorCep($("#cep-carrinho").val());
+    });
+
+    const usuarioPerfil = JSON.parse(localStorage.getItem("usuarioLogado"));
+    if (usuarioPerfil && usuarioPerfil.cep) {
+      $("#cep-carrinho").val(usuarioPerfil.cep);
+      calcularFretePorCep(usuarioPerfil.cep);
+    }
+  }
 
   if (selectAllCheckbox) {
     selectAllCheckbox.addEventListener("change", (e) => {
@@ -247,11 +352,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         item.selecionado = e.target.checked;
       });
       salvarCarrinho();
+      recalcularFreteSePreenchido();
       renderizarCarrinho();
     });
   }
 
- 
   document.addEventListener("click", () => {
     document.querySelectorAll(".custom-dropdown").forEach((d) => {
       d.classList.remove("open");
