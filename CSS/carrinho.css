@@ -616,39 +616,32 @@ body {
   }
 }
 
-/* Caixa de tamanho na cor escura do menu interno */
 .item-size-dropdown .dropdown-toggle {
-  background-color: var(--dropdown-bg);   /* Cor escura (#0d1322) do menu interno */
-  color: var(--text-light);               /* Texto claro */
-  border: 1px solid var(--accent-color);  /* Borda sutil na cor dourada */
+  background-color: var(--dropdown-bg);  
+  color: var(--text-light);               
+  border: 1px solid var(--accent-color); 
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
 }
 
 .item-size-dropdown .dropdown-toggle:hover {
-  background-color: #1a243b;               /* Leve iluminação ao passar o mouse */
+  background-color: #1a243b;               
   border-color: var(--accent-hover);
 }
 
-/* --- COR INTERNA DO MENU DE QUANTIDADE --- */
-
-/* Fundo do caixa suspensa da Quantidade (mesma cor do botão de clique) */
 .item-qty-dropdown .dropdown-menu {
   background-color: var(--accent-color);
   border-color: rgba(255, 255, 255, 0.4);
 }
 
-/* Opções normais do menu de quantidade */
 .item-qty-dropdown .dropdown-option {
   color: #ffffff;
 }
 
-/* Efeito ao passar o mouse (fica da cor escura da caixa de tamanho) */
 .item-qty-dropdown .dropdown-option:hover {
-  background-color: var(--dropdown-bg); /* Cor escura do tamanho (#0d1322) */
-  color: var(--text-light);             /* Texto claro */
+  background-color: var(--dropdown-bg);
+  color: var(--text-light);            
 }
 
-/* Destaque da opção atualmente ativa na lista */
 .item-qty-dropdown .dropdown-option.active {
   color: #0d1322;
   font-weight: 800;
@@ -658,17 +651,14 @@ body {
   color: var(--accent-color);
 }
 
-/* --- CAIXA INTERNA DA ROUPA (TOM CLARO COM EFEITO FLUTUANTE) --- */
-
-/* Moldura clara de estúdio na foto grande */
 .item-image {
-  background-color: #cbe3f7; /* Bege/Areia suave que combina com a marca */
+  background-color: #cbe3f7; 
   padding: 10px;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06); /* Suave profundidade para dentro da caixa */
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06); 
 }
 
 .item-image img {
@@ -742,4 +732,58 @@ body {
 
 .btn-explorar:hover {
   background-color: var(--accent-hover);
+}
+
+/* Caixa de Cálculo de Frete no Resumo */
+.frete-box {
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.15);
+  text-align: left;
+}
+
+.frete-box label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.frete-input-group {
+  display: flex;
+  gap: 8px;
+}
+
+.frete-input-group input {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #94a3b8;
+  font-size: 0.85rem;
+  outline: none;
+  background-color: #ffffff;
+  color: #0f172a;
+}
+
+.frete-input-group button {
+  background-color: var(--bg-page);
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.frete-input-group button:hover {
+  background-color: var(--accent-color);
+}
+
+.frete-resultado {
+  font-size: 0.8rem;
+  margin-top: 6px;
+  color: #334155;
 }
