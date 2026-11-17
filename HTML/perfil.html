@@ -383,6 +383,7 @@
             .grupo-botoes-direita { justify-content: center; }
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
     <header id="cabecalho-principal" class="com-scroll">
@@ -447,8 +448,8 @@
                         <input type="tel" id="input-telefone" disabled placeholder="(34) 99812-3711">
                     </div>
                     <div class="grupo-campo">
-                        <label for="input-cidade">Endereço Principal</label>
-                        <input type="text" id="input-cidade" disabled placeholder="Uberlândia - MG">
+                        <label for="input-cep">CEP</label>
+                        <input type="text" id="input-cep" disabled placeholder="38400-000" maxlength="9">
                     </div>
                 </div>
 
@@ -545,7 +546,6 @@
         </div>
     </footer>
 
-    <!-- Toast de Feedback -->
     <div id="toast-perfil" class="toast-perfil">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E0BA79" stroke-width="2.5">
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
@@ -555,140 +555,127 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
+    $(document).ready(function () {
+        const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
 
-            if (!usuarioLogado) {
-                window.location.href = '../index.html';
-                return;
+        if (!usuarioLogado) {
+            window.location.href = '../index.html';
+            return;
+        }
+
+        function preencherDados() {
+            $('#perfil-nome').text(usuarioLogado.nome);
+            $('#perfil-email').text(usuarioLogado.email);
+            $('#perfil-tipo').text(usuarioLogado.tipo === 'admin' ? 'Administrador' : 'Cliente VIP');
+
+            $('#input-nome').val(usuarioLogado.nome || '');
+            $('#input-email').val(usuarioLogado.email || '');
+            $('#input-telefone').val(usuarioLogado.telefone || '(34) 99812-3711');
+            $('#input-cep').val(usuarioLogado.cep || '38400-100');
+            $('#input-cidade').val(usuarioLogado.cidade || 'Uberlândia - MG');
+
+            const fotoUrl = usuarioLogado.foto || `https://ui-avatars.com/api/?name=${encodeURIComponent(usuarioLogado.nome)}&background=178195&color=fff`;
+            $('#perfil-foto-lg, #avatar-img-nav').attr('src', fotoUrl);
+        }
+
+        preencherDados();
+
+        $('#input-cep').on('input', function () {
+            let cep = $(this).val().replace(/\D/g, '');
+            if (cep.length > 5) {
+                cep = cep.replace(/^(\d{5})(\d)/, '$1-$2');
             }
+            $(this).val(cep);
 
-            const inputNome = document.getElementById('input-nome');
-            const inputEmail = document.getElementById('input-email');
-            const inputTelefone = document.getElementById('input-telefone');
-            const inputCidade = document.getElementById('input-cidade');
-
-            const perfilNome = document.getElementById('perfil-nome');
-            const perfilEmail = document.getElementById('perfil-email');
-            const perfilTipo = document.getElementById('perfil-tipo');
-            const perfilFotoLg = document.getElementById('perfil-foto-lg');
-            const avatarImgNav = document.getElementById('avatar-img-nav');
-
-            const btnToggleEditar = document.getElementById('btn-toggle-editar');
-            const inputFotoOculto = document.getElementById('input-foto-oculto');
-
-            function preencherDados() {
-                perfilNome.innerText = usuarioLogado.nome;
-                perfilEmail.innerText = usuarioLogado.email;
-                perfilTipo.innerText = usuarioLogado.tipo === 'admin' ? 'Administrador' : 'Cliente VIP';
-
-                inputNome.value = usuarioLogado.nome || '';
-                inputEmail.value = usuarioLogado.email || '';
-                inputTelefone.value = usuarioLogado.telefone || '(34) 99812-3711';
-                inputCidade.value = usuarioLogado.cidade || 'Uberlândia - MG';
-
-                const fotoUrl = usuarioLogado.foto || `https://ui-avatars.com/api/?name=${encodeURIComponent(usuarioLogado.nome)}&background=178195&color=fff`;
-                perfilFotoLg.src = fotoUrl;
-                avatarImgNav.src = fotoUrl;
-            }
-
-            preencherDados();
-
-            // Alternar entre Editar e Salvar Dados
-            let emEdicao = false;
-            btnToggleEditar.addEventListener('click', () => {
-                emEdicao = !emEdicao;
-
-                if (emEdicao) {
-                    inputNome.disabled = false;
-                    inputEmail.disabled = false;
-                    inputTelefone.disabled = false;
-                    inputCidade.disabled = false;
-
-                    btnToggleEditar.innerText = 'Salvar Alterações';
-                    btnToggleEditar.style.backgroundColor = '#178195';
-                    inputNome.focus();
-                } else {
-                    const novoNome = inputNome.value.trim();
-                    const novoEmail = inputEmail.value.trim();
-
-                    if (!novoNome || !novoEmail) {
-                        mostrarToastPerfil('Preencha nome e e-mail antes de salvar.');
-                        emEdicao = true;
-                        return;
+            const cepLimpo = cep.replace('-', '');
+            if (cepLimpo.length === 8) {
+                $.getJSON(`https://viacep.com.br/ws/${cepLimpo}/json/`, function (dados) {
+                    if (!dados.erro) {
+                        $('#input-cidade').val(`${dados.localidade} - ${dados.uf}`);
+                        mostrarToastPerfil(`Endereço localizado: ${dados.localidade}/${dados.uf}`);
+                    } else {
+                        mostrarToastPerfil('CEP não encontrado.');
                     }
-
-                    usuarioLogado.nome = novoNome;
-                    usuarioLogado.email = novoEmail;
-                    usuarioLogado.telefone = inputTelefone.value.trim();
-                    usuarioLogado.cidade = inputCidade.value.trim();
-
-                    localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
-
-                    inputNome.disabled = true;
-                    inputEmail.disabled = true;
-                    inputTelefone.disabled = true;
-                    inputCidade.disabled = true;
-
-                    btnToggleEditar.innerText = 'Editar Dados';
-                    btnToggleEditar.style.backgroundColor = '#0A436C';
-
-                    preencherDados();
-                    mostrarToastPerfil('Dados atualizados com sucesso!');
-                }
-            });
-
-            // Troca de Foto de Perfil via Upload Local
-            inputFotoOculto.addEventListener('change', (e) => {
-                const arquivo = e.target.files[0];
-                if (!arquivo) return;
-
-                const leitor = new FileReader();
-                leitor.onload = function(evento) {
-                    usuarioLogado.foto = evento.target.result;
-                    localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
-                    preencherDados();
-                    mostrarToastPerfil('Foto de perfil atualizada!');
-                };
-                leitor.readAsDataURL(arquivo);
-            });
-
-            // Função de Logout
-            function realizarLogout() {
-                localStorage.removeItem('usuarioLogado');
-                sessionStorage.removeItem('tipoUsuario');
-                window.location.href = '../index.html';
+                });
             }
-
-            document.getElementById('btn-sair-conta').addEventListener('click', realizarLogout);
-            document.getElementById('btn-sair-conta-pedidos').addEventListener('click', realizarLogout);
-
-            // Redirecionamento da Coleção para Admin caso aplicável
-            document.addEventListener('click', (e) => {
-                const linkColecao = e.target.closest('a[href="colecao.html"]');
-                if (!linkColecao) return;
-                if (sessionStorage.getItem('tipoUsuario') === 'admin') {
-                    e.preventDefault();
-                    window.location.href = 'colecaoADM.html';
-                }
-            });
         });
 
-        function alternarAbaPerfil(nomeAba, botao) {
-            document.querySelectorAll('.btn-aba-perfil').forEach(b => b.classList.remove('ativo'));
-            document.querySelectorAll('.conteudo-aba-perfil').forEach(c => c.classList.remove('ativo'));
+        let emEdicao = false;
+        $('#btn-toggle-editar').on('click', function () {
+            emEdicao = !emEdicao;
+            const $campos = $('#input-nome, #input-email, #input-telefone, #input-cep, #input-cidade');
 
-            botao.classList.add('ativo');
-            document.getElementById(`aba-${nomeAba}`).classList.add('ativo');
-        }
+            if (emEdicao) {
+                $campos.prop('disabled', false);
+                $(this).text('Salvar Alterações').css('background-color', '#178195');
+                $('#input-nome').focus();
+            } else {
+                const novoNome = $('#input-nome').val().trim();
+                const novoEmail = $('#input-email').val().trim();
+                const novoCep = $('#input-cep').val().trim();
 
-        function mostrarToastPerfil(mensagem) {
-            const toast = document.getElementById('toast-perfil');
-            const msg = document.getElementById('toast-perfil-msg');
-            if (msg) msg.innerText = mensagem;
-            toast.classList.add('ativo');
-            setTimeout(() => toast.classList.remove('ativo'), 3200);
-        }
-    </script>
+                if (!novoNome || !novoEmail) {
+                    mostrarToastPerfil('Preencha nome e e-mail antes de salvar.');
+                    emEdicao = true;
+                    return;
+                }
+
+                usuarioLogado.nome = novoNome;
+                usuarioLogado.email = novoEmail;
+                usuarioLogado.telefone = $('#input-telefone').val().trim();
+                usuarioLogado.cep = novoCep;
+                usuarioLogado.cidade = $('#input-cidade').val().trim();
+
+                localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
+
+                $campos.prop('disabled', true);
+                $(this).text('Editar Dados').css('background-color', '#0A436C');
+
+                preencherDados();
+                mostrarToastPerfil('Dados e CEP salvos com sucesso!');
+            }
+        });
+
+        $('#input-foto-oculto').on('change', function (e) {
+            const arquivo = e.target.files[0];
+            if (!arquivo) return;
+
+            const leitor = new FileReader();
+            leitor.onload = function (evento) {
+                usuarioLogado.foto = evento.target.result;
+                localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
+                preencherDados();
+                mostrarToastPerfil('Foto de perfil atualizada!');
+            };
+            leitor.readAsDataURL(arquivo);
+        });
+
+        $('#btn-sair-conta, #btn-sair-conta-pedidos').on('click', function () {
+            localStorage.removeItem('usuarioLogado');
+            sessionStorage.removeItem('tipoUsuario');
+            window.location.href = '../index.html';
+        });
+
+        $(document).on('click', 'a[href="colecao.html"]', function (e) {
+            if (sessionStorage.getItem('tipoUsuario') === 'admin') {
+                e.preventDefault();
+                window.location.href = 'colecaoADM.html';
+            }
+        });
+    });
+
+    function alternarAbaPerfil(nomeAba, botao) {
+        $('.btn-aba-perfil').removeClass('ativo');
+        $('.conteudo-aba-perfil').removeClass('ativo');
+        $(botao).addClass('ativo');
+        $(`#aba-${nomeAba}`).addClass('ativo');
+    }
+
+    function mostrarToastPerfil(mensagem) {
+        $('#toast-perfil-msg').text(mensagem);
+        $('#toast-perfil').addClass('ativo');
+        setTimeout(() => $('#toast-perfil').removeClass('ativo'), 3200);
+    }
+</script>
 </body>
 </html>
